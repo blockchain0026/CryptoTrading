@@ -1,0 +1,129 @@
+services:
+  exchangeaccess.api:
+    build:
+      context: C:\Users\User\source\repos\CryptoTrading
+      dockerfile: src/Services/ExchangeAccess/ExchangeAccess.API/Dockerfile
+      target: base
+    depends_on:
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTPS_PORT: '44359'
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: exchangeaccessapi:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  bin/Debug/netcoreapp2.1/ExchangeAccess.API.dll'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/bash -c "if PID=$$(pidof
+        -x dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - published: 61059
+      target: 80
+    - published: 44359
+      target: 443
+    volumes:
+    - C:\Users\User\source\repos\CryptoTrading\src\Services\ExchangeAccess\ExchangeAccess.API:/app:rw
+    - C:\Users\User\vsdbg\vs2017u5:/remote_debugger:ro
+    - C:\Users\User\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\User\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages:ro
+    - C:\Users\User\.nuget\packages:/root/.nuget/packages:ro
+  investing.api:
+    build:
+      context: C:\Users\User\source\repos\CryptoTrading
+      dockerfile: src/Services/Investing/Investing.API/Dockerfile
+      target: base
+    depends_on:
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTPS_PORT: '44398'
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: investingapi:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  bin/Debug/netcoreapp2.1/Investing.API.dll'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/bash -c "if PID=$$(pidof
+        -x dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - published: 54790
+      target: 80
+    - published: 44320
+      target: 443
+    volumes:
+    - C:\Users\User\source\repos\CryptoTrading\src\Services\Investing\Investing.API:/app:rw
+    - C:\Users\User\vsdbg\vs2017u5:/remote_debugger:ro
+    - C:\Users\User\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\User\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages:ro
+    - C:\Users\User\.nuget\packages:/root/.nuget/packages:ro
+  rabbitmq:
+    image: rabbitmq:3.7.2-management
+    ports:
+    - published: 4369
+      target: 4369
+    - published: 5671
+      target: 5671
+    - published: 5672
+      target: 5672
+    - published: 15671
+      target: 15671
+    - published: 8080
+      target: 15672
+  sql.data:
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: 1Secure*Password1
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+    - published: 5432
+      target: 1433
+  trendanalysis.api:
+    build:
+      context: C:\Users\User\source\repos\CryptoTrading
+      dockerfile: src/Services/TrendAnalysis/TrendAnalysis.API/Dockerfile
+      target: base
+    depends_on:
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTPS_PORT: '44398'
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: trendanalysisapi:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  bin/Debug/netcoreapp2.1/TrendAnalysis.API.dll'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/bash -c "if PID=$$(pidof
+        -x dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - published: 54270
+      target: 80
+    - published: 44398
+      target: 443
+    volumes:
+    - C:\Users\User\source\repos\CryptoTrading\src\Services\TrendAnalysis\TrendAnalysis.API:/app:rw
+    - C:\Users\User\vsdbg\vs2017u5:/remote_debugger:ro
+    - C:\Users\User\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\User\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages:ro
+    - C:\Users\User\.nuget\packages:/root/.nuget/packages:ro
+version: '3.4'

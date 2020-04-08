@@ -1,0 +1,84 @@
+services:
+  exchangeaccess.api:
+    build:
+      context: C:\Users\User\source\repos\CryptoTrading
+      dockerfile: src/Services/ExchangeAccess/ExchangeAccess.API/Dockerfile
+    depends_on:
+    - rabbitmq
+    - sql.data
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTPS_PORT: '44359'
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: exchangeaccessapi
+    ports:
+    - published: 61059
+      target: 80
+    - published: 44359
+      target: 443
+    volumes:
+    - C:\Users\User\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\User\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+  investing.api:
+    build:
+      context: C:\Users\User\source\repos\CryptoTrading
+      dockerfile: src/Services/Investing/Investing.API/Dockerfile
+    depends_on:
+    - rabbitmq
+    - sql.data
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTPS_PORT: '44398'
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: investingapi
+    ports:
+    - published: 54790
+      target: 80
+    - published: 44320
+      target: 443
+    volumes:
+    - C:\Users\User\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\User\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+  rabbitmq:
+    image: rabbitmq:3.7.2-management
+    ports:
+    - published: 4369
+      target: 4369
+    - published: 5671
+      target: 5671
+    - published: 5672
+      target: 5672
+    - published: 15671
+      target: 15671
+    - published: 8080
+      target: 15672
+  sql.data:
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: 1Secure*Password1
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+    - published: 5432
+      target: 1433
+  trendanalysis.api:
+    build:
+      context: C:\Users\User\source\repos\CryptoTrading
+      dockerfile: src/Services/TrendAnalysis/TrendAnalysis.API/Dockerfile
+    depends_on:
+    - rabbitmq
+    - sql.data
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTPS_PORT: '44398'
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: trendanalysisapi
+    ports:
+    - published: 54270
+      target: 80
+    - published: 44398
+      target: 443
+    volumes:
+    - C:\Users\User\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\User\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+version: '3.4'

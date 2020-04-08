@@ -1,0 +1,58 @@
+version: '3.4'
+
+services:
+  exchangeaccess.api:
+    image: exchangeaccessapi:dev
+    build:
+      target: base
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_exchangeaccess.api$
+    volumes:
+      - C:\Users\User\source\repos\CryptoTrading\src\Services\ExchangeAccess\ExchangeAccess.API:/app
+      - C:\Users\User\vsdbg\vs2017u5:/remote_debugger:ro
+#$nuget_volume_mapping_exchangeaccess.api$
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_exchangeaccess.api$ bin/Debug/netcoreapp2.1/ExchangeAccess.API.dll"
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/bash -c \"if PID=$$(pidof -x dotnet); then kill $$PID; fi\""
+
+  investing.api:
+    image: investingapi:dev
+    build:
+      target: base
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_investing.api$
+    volumes:
+      - C:\Users\User\source\repos\CryptoTrading\src\Services\Investing\Investing.API:/app
+      - C:\Users\User\vsdbg\vs2017u5:/remote_debugger:ro
+#$nuget_volume_mapping_investing.api$
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_investing.api$ bin/Debug/netcoreapp2.1/Investing.API.dll"
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/bash -c \"if PID=$$(pidof -x dotnet); then kill $$PID; fi\""
+
+
+  trendanalysis.api:
+    image: trendanalysisapi:dev
+    build:
+      target: base
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_trendanalysis.api$
+    volumes:
+      - C:\Users\User\source\repos\CryptoTrading\src\Services\TrendAnalysis\TrendAnalysis.API:/app
+      - C:\Users\User\vsdbg\vs2017u5:/remote_debugger:ro
+#$nuget_volume_mapping_trendanalysis.api$
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_trendanalysis.api$ bin/Debug/netcoreapp2.1/TrendAnalysis.API.dll"
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/bash -c \"if PID=$$(pidof -x dotnet); then kill $$PID; fi\""
+

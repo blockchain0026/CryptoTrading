@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  exchangeaccess.api:
+    image: ${DOCKER_REGISTRY}exchangeaccessapi
+    build:
+      context: .
+      dockerfile: src/Services/ExchangeAccess/ExchangeAccess.API/Dockerfile
+    depends_on:
+      - rabbitmq
+      - sql.data     
+
+  trendanalysis.api:
+    image: ${DOCKER_REGISTRY}trendanalysisapi
+    build:
+      context: .
+      dockerfile: src/Services/TrendAnalysis/TrendAnalysis.API/Dockerfile    
+    depends_on:
+      - rabbitmq
+      - sql.data
+
+  investing.api:
+    image: ${DOCKER_REGISTRY}investingapi
+    build:
+      context: .
+      dockerfile: src/Services/Investing/Investing.API/Dockerfile    
+    depends_on:
+      - rabbitmq
+      - sql.data
+
+
+  rabbitmq:
+    image: rabbitmq:3.7.2-management
+
+  sql.data:
+    image: microsoft/mssql-server-linux:2017-latest
+
+
